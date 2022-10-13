@@ -3,10 +3,11 @@ package com.example.demo.app.task;
 import java.util.List;
 import java.util.Optional;
 
-import javax.swing.text.html.Option;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -44,7 +45,8 @@ public class TaskController {
      */
     @GetMapping
     public String task(TaskForm taskForm, Model model) {
-
+    	
+    	String userName = getLoginUserName();
     	//新規登録か更新かを判断する仕掛け
     	taskForm.setNewTask(true);
 
@@ -52,6 +54,7 @@ public class TaskController {
     	List<Task> list = taskService.findAll();
 
         model.addAttribute("list", list);
+        model.addAttribute("userName", userName + " 様");
         model.addAttribute("title", "タスク一覧");
 
         return "task/index";
@@ -274,5 +277,11 @@ public class TaskController {
         taskForm.setNewTask(false);
 
         return taskForm;
+    }
+    private String getLoginUserName() {
+    	//ログイン中のユーザー情報を取得
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    	String userName = auth.getName();
+    	return userName;
     }
 }
