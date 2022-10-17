@@ -180,7 +180,7 @@ public class TaskController {
     	Model model) {
 
     	//タスクを一件削除しリダイレク
-    	taskService.deleteById(id);
+    	taskNewService.deleteById(id);
 
         return "redirect:/task";
     }

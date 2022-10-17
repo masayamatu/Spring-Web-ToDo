@@ -38,6 +38,10 @@ public class TaskNewService {
 		return task;
 	}
 	
+	public void deleteById(Integer id) {
+		taskNewRepository.deleteById(id);
+	}
+	
 	public List<TaskNew> findByName(String userName)
 	{
 		List<TaskNew> list = taskNewRepository.findByUserName(userName);
