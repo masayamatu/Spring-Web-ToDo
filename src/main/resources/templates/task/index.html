@@ -3,8 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <title>CRUDforTask</title>
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="starter-template.css"  th:href="@{/css/starter-template.css}" rel="stylesheet">
 </head>
 <body>
+<div th:replace="~{block/header_boot::headerA_boot}"></div>
 <h1 th:text="${title}">ようこそ</h1>
 <h2 th:text="${userName}">ログインユーザー様</h2>
 <p th:if="${complete}" th:text="${complete}"></p>
