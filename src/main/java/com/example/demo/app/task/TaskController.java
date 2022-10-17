@@ -113,11 +113,13 @@ public class TaskController {
         @PathVariable int id,
         Model model) {
 
-    	//Taskを取得(Optionalでラップ)
-    	Optional<Task> taskOpt = taskService.getTask(id);
-
+//    	//Taskを取得(Optionalでラップ)
+//    	Optional<Task> taskOpt = taskService.getTask(id);
+    	
+    	Optional<TaskNew> taskNewOpt = taskNewService.getTaskNew(id);
+    	
         //TaskFormへの詰め直し
-    	Optional<TaskForm> taskFormOpt = taskOpt.map(t -> makeTaskForm(t));
+    	Optional<TaskForm> taskFormOpt = taskNewOpt.map(t -> makeTaskFormNew(t));
 
         //TaskFormがnullでなければ中身を取り出し
     	if(taskFormOpt.isPresent()) {
@@ -125,7 +127,7 @@ public class TaskController {
     	}
 
         model.addAttribute("taskForm", taskForm);
-        List<Task> list = taskService.findAll();
+        List<TaskNew> list = taskNewService.findByName(getLoginUserName());
         model.addAttribute("list", list);
         model.addAttribute("taskId", id);
         model.addAttribute("title", "更新用フォーム");
@@ -151,10 +153,10 @@ public class TaskController {
 
         if (!result.hasErrors()) {
         	//TaskFormのデータをTaskに格納
-        	Task task = makeTask(taskForm, taskId);
+        	TaskNew task = makeTaskNew(taskForm, taskId);
 
         	//更新処理、フラッシュスコープの使用、リダイレクト（個々の編集ページ）
-        	taskService.update(task);
+        	taskNewService.update(taskId, task);
         	redirectAttributes.addFlashAttribute("complete", "変更が完了しました");
         	
             return "redirect:/task/" + taskId ;
@@ -283,6 +285,18 @@ public class TaskController {
      * @return
      */
     private TaskForm makeTaskForm(Task task) {
+
+        TaskForm taskForm = new TaskForm();
+
+        taskForm.setTypeId(task.getTypeId());
+        taskForm.setTitle(task.getTitle());
+        taskForm.setDetail(task.getDetail());
+        taskForm.setDeadline(task.getDeadline());
+        taskForm.setNewTask(false);
+
+        return taskForm;
+    }
+    private TaskForm makeTaskFormNew(TaskNew task) {
 
         TaskForm taskForm = new TaskForm();
 

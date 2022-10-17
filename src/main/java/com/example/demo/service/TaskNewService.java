@@ -14,9 +14,13 @@ public class TaskNewService {
 	@Autowired
 	TaskNewRepository taskNewRepository;
 	
-	public TaskNew getTaskNew(Integer id) {
-		Optional<TaskNew> task = taskNewRepository.findById(id);
-		return task.get();
+	public Optional<TaskNew> getTaskNew(Integer id) {
+		Optional<TaskNew> taskOpt = taskNewRepository.findById(id);
+		return taskOpt;
+	}
+	public TaskNew getTaskNewById(Integer id) {
+		Optional<TaskNew> taskOpt = taskNewRepository.findById(id);
+		return taskOpt.get();
 	}
 	
 	public TaskNew insert(TaskNew task) {
@@ -24,11 +28,13 @@ public class TaskNewService {
 	}
 	
 	public TaskNew update(Integer id, TaskNew updTask) {
-		TaskNew task = getTaskNew(id);
-		task.setTitle(updTask.getTitle());
-		task.setTypeId(updTask.getTaskTypeNew().getId());
-		task.setDetail(updTask.getDetail());
-		task.setDeadline(updTask.getDeadline());
+		Optional<TaskNew> taskOpt = getTaskNew(id);
+		TaskNew task = new TaskNew();
+		if(taskOpt.isPresent()) {
+			insert(updTask);
+		} else {
+			throw new TaskNotFoundException("指定されたタスクは存在しません。");
+		}
 		return task;
 	}
 	
