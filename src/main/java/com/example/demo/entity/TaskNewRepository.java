@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface TaskNewRepository extends JpaRepository<TaskNew, Integer> {
-	@Query("SELECT t FROM TaskNew WHERE t.username = :userName")
-	List<TaskNew> findByUserName(@Param("userName") String userName);
+//	@Query(value = "SELECT * FROM TaskNew t WHERE t.username = :userName", nativeQuery = true)
+//	List<TaskNew> findByUserName(@Param("userName") String userName);
+	List<TaskNew> findByUserName(String username);
 }

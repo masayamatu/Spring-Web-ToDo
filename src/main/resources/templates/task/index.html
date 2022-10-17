@@ -31,11 +31,11 @@
 <div th:if="${taskForm.newTask}" style="margin:10px">
 <h3>タスク　編集削除</h3>
 <table>
-	<tr th:each="obj : ${list}">
-		<td th:text=${obj.id}></td>
+	<tr th:each="obj, index : ${newList}">
+		<td th:text=${index.count}></td>
 		<td th:text=${obj.title}></td>
+		<td th:text=${obj.taskTypeNew.type}></td>
 		<td th:text=${obj.deadline}></td>
-		<td th:text=${obj.taskType.type}></td>
 		<td><a type="button" th:href="@{/task/{id}(id=${obj.id})}">編集</a></td>
 		<td>
 			<form method="POST" th:action="@{/task/delete}">

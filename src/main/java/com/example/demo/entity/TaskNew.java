@@ -9,7 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -22,11 +22,11 @@ public class TaskNew implements Serializable{
 	@Column(name = "username", nullable = false, length = 50)
     private String userName;
 	
-	@Column(name = "typeid", nullable = false)
+	@Column(name = "type_id", nullable = false)
     private int typeId;
 	
-	@OneToOne
-	@JoinColumn(name = "id")
+	@ManyToOne
+	@JoinColumn(name = "id",insertable=false, updatable=false)
     private TaskTypeNew taskTypeNew;
 	
 	@Column(name = "title")
@@ -62,7 +62,7 @@ public class TaskNew implements Serializable{
 		this.typeId = typeId;
 	}
 
-	public TaskTypeNew getTaskType() {
+	public TaskTypeNew getTaskTypeNew() {
 		return taskTypeNew;
 	}
 

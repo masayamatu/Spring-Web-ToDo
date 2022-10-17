@@ -37,4 +37,8 @@ public class TaskNewService {
 		List<TaskNew> list = taskNewRepository.findByUserName(userName);
 		return list;
 	}
+	public List<TaskNew> findAll() {
+		List<TaskNew> list = taskNewRepository.findAll();
+		return list;
+	}
 }

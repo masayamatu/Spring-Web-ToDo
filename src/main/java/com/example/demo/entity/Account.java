@@ -22,23 +22,24 @@ public class Account implements UserDetails{
     public enum Authority {ROLE_USER,ROLE_MANAGER, ROLE_ADMIN}
 
     @Id
-    @Column(nullable = false, unique = true)
+    @Column(name = "username", nullable = false, unique = true)
     private String username;
 
-    @Column(nullable = false)
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "mailAddress", nullable = false, unique = true)
     private String mailAddress;
 
-    @Column(nullable = false)
+    @Column(name = "mailAddressVerified", nullable = false)
     private boolean mailAddressVerified;
 
-    @Column(nullable = false)
+    @Column(name = "enabled",nullable = false)
     private boolean enabled;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
+    @Column(name = "createdat",nullable = false)
+    private Date createdat;
 
     // roleは複数管理できるように、Set<>で定義。
     @ElementCollection(fetch = FetchType.EAGER)
@@ -62,7 +63,7 @@ public class Account implements UserDetails{
     //登録時に、日時を自動セットする
     @PrePersist
     public void prePersist() {
-        this.createdAt = new Date();
+        this.createdat = new Date();
     }
 
     //admin権限チェック
@@ -160,6 +161,6 @@ public class Account implements UserDetails{
         this.mailAddressVerified = mailAddressVerified;
     }
     public Date getCreatedAt() {
-        return createdAt;
+        return createdat;
     }
 }

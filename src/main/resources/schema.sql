@@ -4,13 +4,14 @@ CREATE TABLE task_type (
   comment varchar(50) DEFAULT NULL,
   PRIMARY KEY (id)
 );
+
+
 CREATE TABLE tasktypenew (
   id int(2) NOT NULL,
   type varchar(20) NOT NULL,
   comment varchar(50) DEFAULT NULL,
   PRIMARY KEY (id)
 );
-
 CREATE TABLE task (
   id int(5) NOT NULL AUTO_INCREMENT,
   user_id int(5) NOT NULL,
@@ -22,7 +23,7 @@ CREATE TABLE task (
 ) ;
 CREATE TABLE tasknew (
   id int(5) NOT NULL AUTO_INCREMENT,
-  username int(5) NOT NULL,
+  username varchar(50) NOT NULL,
   type_id int(2) NOT NULL,
   title varchar(50) NOT NULL,
   detail text,
@@ -42,11 +43,12 @@ CREATE TABLE user (
 );
 CREATE TABLE accounts (
   username varchar(50) NOT NULL,
-  password varchar(50) NOT NULL,
-  mailAddress varchar(50) NOT NULL,
-  mailAddressVerified boolean NOT NULL,
-  enabled boolean NOT NULL,
-  createdAt date NOT NULL,
-  authorities varchar(50) NOT NULL,
+  password varchar(500) NOT NULL,
+  mail_Address varchar(50),
+  mail_Address_Verified boolean,
+  enabled boolean,
+  createdAt date,
+  authorities varchar(50),
   PRIMARY KEY (username)
 );
+

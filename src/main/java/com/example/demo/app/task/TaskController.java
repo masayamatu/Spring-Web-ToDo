@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.entity.Task;
+import com.example.demo.entity.TaskNew;
+import com.example.demo.service.TaskNewService;
 import com.example.demo.service.TaskService;
 
 /**
@@ -30,10 +32,12 @@ import com.example.demo.service.TaskService;
 public class TaskController {
 
     private final TaskService taskService;
+    private final TaskNewService taskNewService;
     
     @Autowired
-    public TaskController(TaskService taskService) {
+    public TaskController(TaskService taskService, TaskNewService taskNewService) {
         this.taskService = taskService;
+        this.taskNewService = taskNewService;
     }
 
 
@@ -52,8 +56,10 @@ public class TaskController {
 
         //Taskのリストを取得する
     	List<Task> list = taskService.findAll();
+    	List<TaskNew> newList = taskNewService.findByName(userName);
 
         model.addAttribute("list", list);
+        model.addAttribute("newList", newList);
         model.addAttribute("userName", userName + " 様");
         model.addAttribute("title", "タスク一覧");
 
