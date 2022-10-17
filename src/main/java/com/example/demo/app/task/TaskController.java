@@ -54,12 +54,10 @@ public class TaskController {
     	//新規登録か更新かを判断する仕掛け
     	taskForm.setNewTask(true);
 
-        //Taskのリストを取得する
-    	List<Task> list = taskService.findAll();
-    	List<TaskNew> newList = taskNewService.findByName(userName);
+        //ユーザーのTaskのリストを取得する
+    	List<TaskNew> list = taskNewService.findByName(userName);
 
         model.addAttribute("list", list);
-        model.addAttribute("newList", newList);
         model.addAttribute("userName", userName + " 様");
         model.addAttribute("title", "タスク一覧");
 
@@ -86,16 +84,16 @@ public class TaskController {
 //    	task.setDeadline(taskForm.getDeadline());
     	 
         if (!result.hasErrors()) {
-        	Task task = makeTask(taskForm, 0);
+        	TaskNew task = makeTaskNew(taskForm, 0);
         	
         	//一件挿入後リダイレクト
-        	taskService.insert(task);
+        	taskNewService.insert(task);
 
             return "redirect:/task";
         } else {
             taskForm.setNewTask(true);
             model.addAttribute("taskForm", taskForm);
-            List<Task> list = taskService.findAll();
+            List<TaskNew> list = taskNewService.findByName(getLoginUserName());
             model.addAttribute("list", list);
             model.addAttribute("title", "タスク一覧（バリデーション）");
             return "task/index";
@@ -260,6 +258,18 @@ public class TaskController {
         	task.setId(taskId);
         }
         task.setUserId(1);
+        task.setTypeId(taskForm.getTypeId());
+        task.setTitle(taskForm.getTitle());
+        task.setDetail(taskForm.getDetail());
+        task.setDeadline(taskForm.getDeadline());
+        return task;
+    }
+    private TaskNew makeTaskNew(TaskForm taskForm, int taskId) {
+        TaskNew task = new TaskNew();
+        if(taskId != 0) {
+        	task.setId(taskId);
+        }
+        task.setUserName(getLoginUserName());;
         task.setTypeId(taskForm.getTypeId());
         task.setTitle(taskForm.getTitle());
         task.setDetail(taskForm.getDetail());

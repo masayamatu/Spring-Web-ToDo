@@ -31,7 +31,7 @@
 <div th:if="${taskForm.newTask}" style="margin:10px">
 <h3>タスク　編集削除</h3>
 <table>
-	<tr th:each="obj, index : ${newList}">
+	<tr th:each="obj, index : ${list}">
 		<td th:text=${index.count}></td>
 		<td th:text=${obj.title}></td>
 		<td th:text=${obj.taskTypeNew.type}></td>

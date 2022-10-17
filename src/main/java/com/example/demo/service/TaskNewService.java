@@ -26,7 +26,7 @@ public class TaskNewService {
 	public TaskNew update(Integer id, TaskNew updTask) {
 		TaskNew task = getTaskNew(id);
 		task.setTitle(updTask.getTitle());
-		task.setTypeId(updTask.getTaskType().getId());
+		task.setTypeId(updTask.getTaskTypeNew().getId());
 		task.setDetail(updTask.getDetail());
 		task.setDeadline(updTask.getDeadline());
 		return task;
