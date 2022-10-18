@@ -54,14 +54,12 @@ public class TaskController {
     	//新規登録か更新かを判断する仕掛け
     	taskForm.setNewTask(true);
 
-        //Taskのリストを取得する
-    	List<Task> list = taskService.findAll();
-    	List<TaskNew> newList = taskNewService.findByName(userName);
+        //ユーザーのTaskのリストを取得する
+    	List<TaskNew> list = taskNewService.findByName(userName);
 
         model.addAttribute("list", list);
-        model.addAttribute("newList", newList);
         model.addAttribute("userName", userName + " 様");
-        model.addAttribute("title", "タスク一覧");
+        model.addAttribute("title", "タスク登録");
 
         return "task/index";
     }
@@ -86,16 +84,16 @@ public class TaskController {
 //    	task.setDeadline(taskForm.getDeadline());
     	 
         if (!result.hasErrors()) {
-        	Task task = makeTask(taskForm, 0);
+        	TaskNew task = makeTaskNew(taskForm, 0);
         	
         	//一件挿入後リダイレクト
-        	taskService.insert(task);
+        	taskNewService.insert(task);
 
             return "redirect:/task";
         } else {
             taskForm.setNewTask(true);
             model.addAttribute("taskForm", taskForm);
-            List<Task> list = taskService.findAll();
+            List<TaskNew> list = taskNewService.findByName(getLoginUserName());
             model.addAttribute("list", list);
             model.addAttribute("title", "タスク一覧（バリデーション）");
             return "task/index";
@@ -115,11 +113,13 @@ public class TaskController {
         @PathVariable int id,
         Model model) {
 
-    	//Taskを取得(Optionalでラップ)
-    	Optional<Task> taskOpt = taskService.getTask(id);
-
+//    	//Taskを取得(Optionalでラップ)
+//    	Optional<Task> taskOpt = taskService.getTask(id);
+    	
+    	Optional<TaskNew> taskNewOpt = taskNewService.getTaskNew(id);
+    	
         //TaskFormへの詰め直し
-    	Optional<TaskForm> taskFormOpt = taskOpt.map(t -> makeTaskForm(t));
+    	Optional<TaskForm> taskFormOpt = taskNewOpt.map(t -> makeTaskFormNew(t));
 
         //TaskFormがnullでなければ中身を取り出し
     	if(taskFormOpt.isPresent()) {
@@ -127,7 +127,7 @@ public class TaskController {
     	}
 
         model.addAttribute("taskForm", taskForm);
-        List<Task> list = taskService.findAll();
+        List<TaskNew> list = taskNewService.findByName(getLoginUserName());
         model.addAttribute("list", list);
         model.addAttribute("taskId", id);
         model.addAttribute("title", "更新用フォーム");
@@ -153,10 +153,10 @@ public class TaskController {
 
         if (!result.hasErrors()) {
         	//TaskFormのデータをTaskに格納
-        	Task task = makeTask(taskForm, taskId);
+        	TaskNew task = makeTaskNew(taskForm, taskId);
 
         	//更新処理、フラッシュスコープの使用、リダイレクト（個々の編集ページ）
-        	taskService.update(task);
+        	taskNewService.update(taskId, task);
         	redirectAttributes.addFlashAttribute("complete", "変更が完了しました");
         	
             return "redirect:/task/" + taskId ;
@@ -180,7 +180,7 @@ public class TaskController {
     	Model model) {
 
     	//タスクを一件削除しリダイレク
-    	taskService.deleteById(id);
+    	taskNewService.deleteById(id);
 
         return "redirect:/task";
     }
@@ -266,6 +266,18 @@ public class TaskController {
         task.setDeadline(taskForm.getDeadline());
         return task;
     }
+    private TaskNew makeTaskNew(TaskForm taskForm, int taskId) {
+        TaskNew task = new TaskNew();
+        if(taskId != 0) {
+        	task.setId(taskId);
+        }
+        task.setUserName(getLoginUserName());;
+        task.setTypeId(taskForm.getTypeId());
+        task.setTitle(taskForm.getTitle());
+        task.setDetail(taskForm.getDetail());
+        task.setDeadline(taskForm.getDeadline());
+        return task;
+    }
 
     /**
      * TaskのデータをTaskFormに入れて返す
@@ -273,6 +285,18 @@ public class TaskController {
      * @return
      */
     private TaskForm makeTaskForm(Task task) {
+
+        TaskForm taskForm = new TaskForm();
+
+        taskForm.setTypeId(task.getTypeId());
+        taskForm.setTitle(task.getTitle());
+        taskForm.setDetail(task.getDetail());
+        taskForm.setDeadline(task.getDeadline());
+        taskForm.setNewTask(false);
+
+        return taskForm;
+    }
+    private TaskForm makeTaskFormNew(TaskNew task) {
 
         TaskForm taskForm = new TaskForm();
 

@@ -26,7 +26,7 @@ public class TaskNew implements Serializable{
     private int typeId;
 	
 	@ManyToOne
-	@JoinColumn(name = "id",insertable=false, updatable=false)
+	@JoinColumn(name = "type_id",insertable=false, updatable=false)
     private TaskTypeNew taskTypeNew;
 	
 	@Column(name = "title")
