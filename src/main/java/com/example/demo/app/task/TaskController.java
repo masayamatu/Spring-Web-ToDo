@@ -59,7 +59,7 @@ public class TaskController {
 
         model.addAttribute("list", list);
         model.addAttribute("userName", userName + " 様");
-        model.addAttribute("title", "タスク一覧");
+        model.addAttribute("title", "タスク登録");
 
         return "task/index";
     }
