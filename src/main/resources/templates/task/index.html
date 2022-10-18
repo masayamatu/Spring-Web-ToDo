@@ -12,7 +12,6 @@
 <body>
 <div th:replace="~{block/header_boot::headerA_boot}"></div>
 <h1 th:text="${title}">ようこそ</h1>
-<h2 th:text="${userName}">ログインユーザー様</h2>
 <p th:if="${complete}" th:text="${complete}"></p>
 <form method="POST" th:action="${taskForm.newTask}? @{/task/insert} : @{/task/update}" th:object="${taskForm}">
 	<label>タスクタイプ（選択してください）：</label>
@@ -35,8 +34,18 @@
 	<input type="submit" value="送信">
 </form>
 <div th:if="${taskForm.newTask}" style="margin:10px">
-<h3>タスク　編集削除</h3>
-<table>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">タスク</th>
+      <th scope="col">優先度</th>
+      <th scope="col">期限</th>
+      <th scope="col">編集</th>
+      <th scope="col">削除</th>
+    </tr>
+  </thead>
+  <tbody>
 	<tr th:each="obj, index : ${list}">
 		<td th:text=${index.count}></td>
 		<td th:text=${obj.title}></td>
@@ -51,6 +60,7 @@
 			<!-- 1-4　複製ボタンを作成する -->
 		</td>
 	</tr>
+  </tbody>
 </table>
 </div>
 <br>
