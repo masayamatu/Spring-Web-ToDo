@@ -27,6 +27,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/**").hasRole("USER")
                 .and()
                 .formLogin()
+                .defaultSuccessUrl("/task")
 //                .loginPage("/login").failureUrl("/login-error");
                 //h2-consoleにアクセスできるようにするため以下を設定
         		.and()
